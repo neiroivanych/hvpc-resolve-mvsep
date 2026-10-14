@@ -21,7 +21,15 @@ def read_block(response, size, *, deadline, timeout, clock=time.monotonic,
     # HTTPResponse.read(n) can perform many recv() calls, each resetting the
     # socket timeout. read1(n) returns after one buffered/network read instead.
     reader = getattr(stream, 'read1', None) or stream.read
-    block = reader(size)
+    try:
+        block = reader(size)
+    except TimeoutError:
+        # The OS may round a socket timeout down and raise just before our
+        # monotonic deadline. Preserve which limit bounded this socket read;
+        # a shorter per-request timeout still remains a network error.
+        if sock is not None and remaining <= timeout:
+            raise DeadlineExceeded(message) from None
+        raise
     if clock() >= deadline:
         raise DeadlineExceeded(message)
     return block

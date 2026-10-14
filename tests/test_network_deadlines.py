@@ -85,6 +85,28 @@ class DeadlineTests(unittest.TestCase):
         self.assertEqual(self.clock.value, 0)
         response.socket.settimeout.assert_not_called()
 
+    def test_budget_limited_socket_timeout_before_clock_deadline_keeps_reason(self):
+        response = Trickle(self.clock)
+        def early_timeout(size):
+            self.clock.sleep(.249)
+            raise TimeoutError('timed out')
+        response.read1 = early_timeout
+        with self.assertRaisesRegex(DeadlineExceeded, 'Download time limit'):
+            read_block(response, 65536, deadline=.25, timeout=5, clock=self.clock,
+                       message='Download time limit')
+        self.assertLess(self.clock.value, .25)
+        response.socket.settimeout.assert_called_once_with(.25)
+
+    def test_shorter_request_socket_timeout_is_not_a_total_budget_timeout(self):
+        response = Trickle(self.clock)
+        def early_timeout(size):
+            self.clock.sleep(.249)
+            raise TimeoutError('timed out')
+        response.read1 = early_timeout
+        with self.assertRaises(TimeoutError):
+            read_block(response, 65536, deadline=5, timeout=.25, clock=self.clock)
+        response.socket.settimeout.assert_called_once_with(.25)
+
     def test_post_response_timeout_never_retries_or_claims_a_saved_hash(self):
         import tempfile
         with tempfile.TemporaryDirectory() as folder:
