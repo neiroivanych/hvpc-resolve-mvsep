@@ -2,7 +2,7 @@
 
 [Русский](README.md) · **English**
 
-Separate a clip into vocals, music, speech, instruments, and other components with MVSEP, then add the results to your DaVinci Resolve project.
+Separate sound from audio and video files and add the results to DaVinci Resolve Studio — to the Media Pool or onto separate audio tracks. The interface is available in Russian and English.
 
 **Independent, unofficial integration.** HVPC Resolve-MVSEP is not affiliated with or endorsed by Blackmagic Design or the operator of MVSEP. The names DaVinci Resolve and MVSEP identify compatibility and belong to their respective owners.
 
@@ -23,11 +23,9 @@ Separate a clip into vocals, music, speech, instruments, and other components wi
 
 The application uses the Python runtime included with Resolve 21.1+. No separate Python, FFmpeg, or additional libraries are required. The free edition of Resolve, macOS, and Linux are not supported in this release.
 
-A macOS version is planned as a separate development stage. No Mac package is available yet.
-
 ## Installation
 
-1. Open [Releases](https://github.com/neiroivanych/hvpc-resolve-mvsep/releases), download **HVPC-Resolve-MVSEP-v0.3.0-Windows.zip** and fully extract it.
+1. Open [Releases](https://github.com/neiroivanych/hvpc-resolve-mvsep/releases), under **Assets** download **HVPC-Resolve-MVSEP-v0.3.0-Windows.zip** and fully extract it.
 2. Wait for separations to finish, then close Resolve and HVPC Resolve-MVSEP, including its tray window. Run **Install.exe** from the extracted folder.
 3. Choose a **Working folder**. Keep the suggested location or choose a new empty folder for the application, settings and results.
 4. Paste your **MVSEP API token**. If you need one, follow the link in the wizard, sign in on the [MVSEP API page](https://mvsep.com/en/full_api) and copy your token. Click **Install**.
@@ -39,7 +37,7 @@ The wizard supports Resolve Studio 21.1+ in the default `Program Files\Blackmagi
 
 The working folder determines the mode automatically: the button reads **Install** for a new folder and **Update / configure** for an existing installation.
 
-**If you used Code → Download ZIP:** run **Install.cmd**. It builds and opens the same wizard using Windows components, without installing other software. For regular installation, use the Releases archive with the ready-made `Install.exe`.
+To install the application, choose the archive bearing the application name and **Windows**. The **Source code** archives are intended for developers.
 
 ## Your first separation
 
