@@ -1,0 +1,31 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+.idea/
+.vscode/
+.env
+.env.*
+!.env.example
+settings.json
+# Local credentials, preferences, history, recent settings and their backups.
+# Portable examples live at the repository root, outside this directory.
+/config/
+jobs/
+# Resolve-generated media/cache; do not publish local project data.
+Untitled Project/
+# Optional personal legacy copy; portable source is scripts/HVPC Resolve-MVSEP.py.
+/ResolveMVSEP.py
+# Local development history; public installation/release docs live under docs/.
+/NOTES.md
+/docs/AUDIT-*.md
+logs/*
+!logs/.gitkeep
+output/
+downloads/
+*.egg-info/
+build/
+dist/

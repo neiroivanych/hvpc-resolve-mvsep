@@ -1,0 +1,2 @@
+# M1/M2 use the Python standard library and Resolve's installed scripting API.
+# Do not pip-install DaVinciResolveScript: use the module supplied by Blackmagic.

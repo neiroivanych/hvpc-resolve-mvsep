@@ -1,0 +1,13 @@
+{
+  "api_token": "",
+  "mode": "vocals_instrumental",
+  "sep_type": null,
+  "preset_id": null,
+  "api_options": {},
+  "output_format": 1,
+  "request_timeout_seconds": 60,
+  "job_timeout_seconds": 3600,
+  "download_timeout_seconds": 900,
+  "poll_interval_seconds": 10,
+  "max_get_retries": 3
+}
