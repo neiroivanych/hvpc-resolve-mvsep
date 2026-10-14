@@ -24,6 +24,7 @@ from .core.pipeline import PipelineView, pipeline_view
 from .core.i18n import load_language, tr, using_language
 from .core.quota import QuotaMonitor, quota_text
 from .windows_style import visual_styles
+from .app_icon import WindowIcons
 from .selectable_text import READONLY_LABEL, enable_select_all
 from .progress_panel import ProgressPanel
 from .resolve_monitor import ResolveMonitor
@@ -507,6 +508,7 @@ class _Window:
         self.timer(self.hwnd, 4, 100, None)
 
     def run(self):
+        icons = None
         name = "ResolveMVSEPProgress_" + str(os.getpid())
         cls = self.WindowClass()
         cls.lpfnWndProc, cls.hInstance, cls.hbrBackground, cls.lpszClassName = self.callback, self.module, 16, name
@@ -519,6 +521,7 @@ class _Window:
                                     None, None, self.module, None)
             if not self.hwnd:
                 raise ctypes.WinError(ctypes.get_last_error())
+            icons = WindowIcons(self)
             self.build_controls()
             self.tick()
             self.show(self.hwnd, 5)
@@ -548,4 +551,8 @@ class _Window:
             for font in self.own_fonts:
                 if font:
                     self.delete_object(font)
-            self.cleanup()
+            try:
+                self.cleanup()
+            finally:
+                if icons:
+                    icons.close()

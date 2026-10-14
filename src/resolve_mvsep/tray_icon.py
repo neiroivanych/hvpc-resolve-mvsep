@@ -7,6 +7,7 @@ import time
 from ctypes import wintypes as w
 
 from .core.i18n import tr
+from .app_icon import load_icon
 
 TRAY_MESSAGE = 0x8000 + 73
 
@@ -48,9 +49,12 @@ class TrayIcon:
         u.GetCursorPos.argtypes = [ctypes.POINTER(w.POINT)]
         u.PostMessageW.argtypes = [w.HWND, w.UINT, w.WPARAM, w.LPARAM]
         u.IsWindowEnabled.argtypes, u.IsWindowEnabled.restype = [w.HWND], w.BOOL
+        u.GetSystemMetrics.argtypes, u.GetSystemMetrics.restype = [ctypes.c_int], ctypes.c_int
         try:
             for name, rgb in [('working', (49, 95, 134)), ('done', (35, 143, 120)), ('error', (140, 65, 82))]:
-                self.icons[name] = self.make_icon(rgb)
+                # Preserve the logo in every state; the tooltip and window carry status.
+                self.icons[name] = (load_icon(u, u.GetSystemMetrics(49) or 16, u.GetSystemMetrics(50) or 16)
+                                    or self.make_icon(rgb))
         except Exception:
             self.close()
             raise

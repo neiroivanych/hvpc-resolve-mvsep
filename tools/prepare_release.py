@@ -20,6 +20,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import quote, quote_plus
 
+from build_installer import build as build_installer
+
 ROOT = Path(__file__).resolve().parents[1]
 PRIVATE_PARTS = {'config', 'jobs', 'output', 'downloads', 'Untitled Project',
                  '__pycache__', '.git', '.venv', 'venv', 'build', 'dist'}
@@ -124,6 +126,11 @@ def main():
         for name in names:
             if hashlib.sha256((clean / name).read_bytes()).hexdigest() != hashes[name]:
                 raise RuntimeError('A public file changed during the clean-copy tests: ' + name)
+        # Build only from the audited sources. The generated executable belongs to
+        # the release ZIP, not the source inventory or a developer's local build.
+        build_installer(clean, clean / 'Install.exe')
+        names.append('Install.exe')
+        hashes['Install.exe'] = hashlib.sha256((clean / 'Install.exe').read_bytes()).hexdigest()
         created = datetime.now(timezone.utc)
         folder = ROOT / 'build'
         folder.mkdir(exist_ok=True)
@@ -144,6 +151,7 @@ def main():
                   'local_secret_variants_checked': len(tokens), 'local_secret_matches': 0,
                   'personal_home_matches': 0, 'clean_copy_tests': tests, 'compilation': 'passed',
                   'python_3_10_syntax': 'passed', 'readme_links': 'passed',
+                  'windows_installer': 'compiled from audited C# sources',
                   'archive': str(archive), 'archive_sha256': hashlib.sha256(archive.read_bytes()).hexdigest(),
                   'limitations': 'Checks current files and known local tokens; not a Git history audit or a rights clearance.'}
         (ROOT / 'logs').mkdir(exist_ok=True)

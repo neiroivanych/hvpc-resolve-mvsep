@@ -23,34 +23,23 @@ Separate a clip into vocals, music, speech, instruments, and other components wi
 
 The application uses the Python runtime included with Resolve 21.1+. No separate Python, FFmpeg, or additional libraries are required. The free edition of Resolve, macOS, and Linux are not supported in this release.
 
+A macOS version is planned as a separate development stage. No Mac package is available yet.
+
 ## Installation
 
-1. On this GitHub repository page, select **Code → Download ZIP**. If a packaged release is available under **Releases**, you can download that instead. Extract the entire archive into a permanent folder, for example `D:\Apps\HVPC Resolve-MVSEP`. It must contain `src`, `scripts`, and this README. Do not run from inside the ZIP.
-2. Close Resolve. Press **Win + R**, paste the path below, and press Enter. Create the `Utility` folder if it does not exist.
+1. Open [Releases](https://github.com/neiroivanych/hvpc-resolve-mvsep/releases), download **HVPC-Resolve-MVSEP-v0.3.0-Windows.zip** and fully extract it.
+2. Wait for separations to finish, then close Resolve and HVPC Resolve-MVSEP, including its tray window. Run **Install.exe** from the extracted folder.
+3. Choose a **Working folder**. Keep the suggested location or choose a new empty folder for the application, settings and results.
+4. Paste your **MVSEP API token**. If you need one, follow the link in the wizard, sign in on the [MVSEP API page](https://mvsep.com/en/full_api) and copy your token. Click **Install**.
+5. In Resolve, open **Preferences → System → General**. Set the first field, **External scripting using**, to **Local**, save and restart Resolve. If **Local** is already selected, no change is needed. The wizard reminds you on its final screen.
 
-   ```text
-   %APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility
-   ```
+You can now use **Workspace → Scripts → HVPC Resolve-MVSEP**. There is no need to copy files into system folders or manually edit JSON or Python files. Administrator rights are not required.
 
-3. Copy `scripts\HVPC Resolve-MVSEP.py` from the extracted application into `Utility`.
-4. Open the **copied** file in a text editor. Replace `PROJECT_ROOT = ""` with the path to your application folder:
+The wizard supports Resolve Studio 21.1+ in the default `Program Files\Blackmagic Design\DaVinci Resolve` folder. It installs for the current Windows user. The token is stored locally in the working folder; your account password is not needed. The MVSEP connection is checked when the separation window opens.
 
-   ```python
-   PROJECT_ROOT = r"D:\Apps\HVPC Resolve-MVSEP"
-   ```
+The working folder determines the mode automatically: the button reads **Install** for a new folder and **Update / configure** for an existing installation.
 
-   Save the file with its `.py` extension. Keep the other application files in the extracted folder.
-5. In the application folder, copy `settings.example.json` to `settings.json`. Create a `config` folder and copy `mvsep.example.json` into it as `mvsep.json`. The examples already contain the initial settings; you do not need to edit algorithm settings in these files.
-6. Sign in to your account on the [MVSEP API page](https://mvsep.com/en/full_api). Copy your API token and paste it between the quotes of the `api_token` field in **`config\mvsep.json`**:
-
-   ```json
-   "api_token": "YOUR_TOKEN"
-   ```
-
-   Save the file. Never put the token in `mvsep.example.json`, GitHub messages, or screenshots. If Windows hides file extensions, enable their display: the files must end in `.json`, not `.json.txt`.
-7. Start Resolve and set **Preferences → System → General → External scripting → Local**. Save and restart Resolve. This setting is required to add results to the project.
-
-The menu entry will appear under **Workspace → Scripts → HVPC Resolve-MVSEP**. If you previously set the `RESOLVE_MVSEP_HOME` environment variable, it takes precedence over `PROJECT_ROOT`; check that it points to the intended folder.
+**If you used Code → Download ZIP:** run **Install.cmd**. It builds and opens the same wizard using Windows components, without installing other software. For regular installation, use the Releases archive with the ready-made `Install.exe`.
 
 ## Your first separation
 
@@ -110,12 +99,12 @@ Balance and remaining free separations are displayed using MVSEP data. Unavailab
 
 | Situation | What to do |
 | --- | --- |
-| No menu entry | Check the `Utility` folder, the `.py` extension, and restart Resolve. |
-| Application not found | Check `PROJECT_ROOT` in the installed launcher and the location of `src`. |
+| Menu entry is missing | Close Resolve, run the wizard again and select your working folder. Then reopen Resolve. |
+| Application not found | Run the wizard again and select your existing working folder. Do not move it after installation. |
 | A clip report opens instead of separation settings | Set `"action": "separate"` in `settings.json`, or use the current `settings.example.json` as your starting point. |
 | No clip selected | Select one timeline clip; for MP4, a linked video/audio pair is accepted. |
-| API token error | Check `api_token` in `config\mvsep.json` against your MVSEP account. |
-| No Resolve connection | Open the original project, check **External scripting → Local**, and click **Check connection**. |
+| API token error | Close Resolve and the app windows, run the wizard, select your existing working folder and paste a valid token. |
+| No Resolve connection | Open the original project, check **External scripting using → Local**, and click **Check connection**. |
 | Track placement refused | Read the reason in the highlighted details area. Open the required timeline, restore the source, or use **To Media Pool**. |
 | Tracks were added but there is no sound | Find the reported track numbers at the bottom of the timeline and enable them with **M**. |
 | Download failure or timeout | Use **Resume download / Resume task** if available. |
@@ -126,7 +115,11 @@ Do not attach your API token, the `config` folder, or the entire project. Before
 
 ## Updating
 
-Wait for background tasks to finish, then close Resolve and the application windows. Back up the current folder. Extract the new version, preserving your `config`, `settings.json`, `jobs`, and `output` to retain settings and previous tasks. Update the launcher in `Utility`, set `PROJECT_ROOT` again, and restart Resolve.
+Wait for background tasks to finish, then close Resolve and the application windows. Extract the new ZIP into a separate folder and run **Install.exe**. Select your previous installation as the **Working folder**; the wizard will usually find it automatically. Leave the token field empty to keep the saved token and click **Update / configure**.
+
+Settings, tasks and results are kept. Replaced files are backed up in `config\installer-backups` inside the working folder. If writing fails, the wizard attempts to restore the previous files and reports the outcome.
+
+To change your token, run the same wizard with your existing working folder. A wizard-installed menu entry always opens its selected folder, even if you previously set `RESOLVE_MVSEP_HOME`.
 
 ## License and third-party services
 

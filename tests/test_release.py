@@ -16,11 +16,13 @@ class ReleaseTests(unittest.TestCase):
                    'jobs/example/job.json', 'logs/window.log', 'logs/screenshot.png',
                    'output/song/song_vocals.wav', 'downloads/song.wav', 'ResolveMVSEP.py',
                    'Untitled Project/cache/audio.wav', 'src/__pycache__/main.cpython-314.pyc',
-                   'NOTES.md', 'docs/AUDIT-2026-10-10.md']
+                   'NOTES.md', 'docs/AUDIT-2026-10-10.md', 'Install.exe']
         public = ['README.md', 'README.en.md', 'LICENSE', '.gitignore', 'mvsep.example.json', 'settings.example.json',
                   'logs/.gitkeep', 'src/resolve_mvsep/cli.py', 'scripts/HVPC Resolve-MVSEP.py',
                   'tests/test_release.py', '.github/workflows/tests.yml', 'tools/prepare_release.py',
-                  '.github/ISSUE_TEMPLATE/bug_report.md', 'docs/releases/v0.2.0.md']
+                  '.github/ISSUE_TEMPLATE/bug_report.md', 'docs/releases/v0.2.0.md',
+                  'Install.cmd', 'installer/SetupCore.cs', 'installer/SetupForm.cs',
+                  'installer/app.manifest', 'tools/build_installer.py', 'tests/InstallerTests.cs']
         with tempfile.TemporaryDirectory() as directory:
             working = Path(directory)
             subprocess.run(['git', 'init', '-q', str(working)], check=True, capture_output=True, timeout=10)
